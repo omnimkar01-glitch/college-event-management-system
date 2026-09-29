@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Event Management System - Basic College Event Registration">
+<title>College Event Management System | PRMCEAM Style</title>
+
+<style>
+:root{
+  --navy:#08224b;
+  --blue:#123f7d;
+  --blue2:#1d5aa7;
+  --gold:#e5aa18;
+  --light:#f4f7fb;
+  --text:#253044;
+  --muted:#687386;
+  --white:#fff;
+  --danger:#c62828;
+  --success:#168449;
+  --shadow:0 10px 30px rgba(8,34,75,.10);
+  --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--light);color:var(--text);line-height:1.6}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.container{width:min(1180px,92%);margin:auto}
+
+/* top strip */
+.top-strip{background:var(--navy);color:#fff;font-size:13px}
+.top-strip .container{min-height:38px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* header */
+.header{background:#fff;box-shadow:0 3px 16px rgba(0,0,0,.08);position:sticky;top:0;z-index:50}
+.header-inner{min-height:84px;display:flex;align-items:center;justify-content:space-between;gap:28px}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.logo{width:62px;height:62px;border-radius:50%;background:var(--blue);border:3px solid var(--gold);display:grid;place-items:center;color:#fff;font-weight:800;letter-spacing:.5px;flex:0 0 auto}
+.brand h1{font-size:19px;color:var(--blue);line-height:1.2}
+.brand p{font-size:12px;color:var(--muted);margin-top:3px}
+.nav{display:flex;align-items:center;justify-content:flex-end;gap:4px;flex-wrap:wrap}
+.nav button{border:0;background:transparent;color:var(--blue);padding:9px 10px;font-size:14px;font-weight:700;border-radius:7px}
+.nav button:hover{background:#eef4fd}
+.nav .gold{background:var(--gold);color:#fff}
+.nav .gold:hover{background:#cf9607}
+.mobile-toggle{display:none;border:0;background:#eef4fd;color:var(--blue);padding:9px;border-radius:7px}
+
+/* hero */
+.hero{min-height:600px;position:relative;overflow:hidden;color:#fff;display:flex;align-items:center}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:opacity .7s ease,transform 5s ease;transform:scale(1.03);}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,22,50,.88),rgba(7,40,87,.55),rgba(7,40,87,.35))}
+.hero-content{position:relative;z-index:2;padding:70px 0;max-width:780px}
+.kicker{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#ffd76a;font-weight:800;margin-bottom:14px}
+.hero h2{font-size:clamp(35px,5vw,62px);line-height:1.08;margin-bottom:18px}
+.hero p{font-size:18px;max-width:720px;color:#f1f5fb;margin-bottom:25px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{border:0;border-radius:8px;padding:12px 18px;font-weight:800;transition:.2s;display:inline-block}
+.btn-primary{background:var(--gold);color:#fff}.btn-primary:hover{background:#cd9406;transform:translateY(-1px)}
+.btn-light{background:#fff;color:var(--blue)}.btn-light:hover{background:#f2f5fa}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:#0e3262}
+.btn-danger{background:var(--danger);color:#fff}.btn-danger:hover{background:#a71f1f}
+.btn-success{background:var(--success);color:#fff}.btn-success:hover{background:#106835}
+.btn-outline{background:transparent;border:1px solid #d7e0ee;color:var(--blue)}
+.hero-dots{position:absolute;z-index:2;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.5);border:0}.hero-dot.active{background:#fff}
+
+/* announcement */
+.announcement{background:var(--gold);color:#fff}
+.announcement .container{padding:12px 0;text-align:center;font-weight:800;font-size:14px}
+
+/* generic */
+.section{padding:75px 0}
+.section.alt{background:#fff}
+.section-head{text-align:center;margin-bottom:40px}
+.section-head .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);font-weight:800;margin-bottom:8px}
+.section-head h2{font-size:36px;color:var(--blue);margin-bottom:8px}
+.section-head p{color:var(--muted);max-width:680px;margin:auto}
+
+/* cards */
+.news-grid,.feature-grid,.event-grid,.dept-grid,.gallery-grid{display:grid;gap:22px}
+.news-grid{grid-template-columns:repeat(3,1fr)}
+.news-card,.feature-card,.event-card,.dept-card,.info-card,.dashboard-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
+.news-card{padding:22px;border-left:5px solid var(--gold)}
+.news-date{color:#b77c00;font-size:13px;font-weight:800;margin-bottom:8px}
+.news-card h3{color:var(--blue);margin-bottom:8px;font-size:19px}
+.news-card p{color:var(--muted)}
+
+.about-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:45px;align-items:center}
+.about-copy h2{font-size:38px;color:var(--blue);margin-bottom:16px}
+.about-copy p{color:var(--muted);margin-bottom:13px}
+.about-points{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.about-point{background:#f6f9fe;border:1px solid #e2ebf8;padding:13px;border-radius:9px;color:var(--blue);font-weight:700}
+.about-image{height:390px;border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.about-image img{width:100%;height:100%;object-fit:cover}
+
+.feature-grid{grid-template-columns:repeat(4,1fr)}
+.feature-card{padding:28px;text-align:center;border-top:4px solid var(--blue)}
+.feature-icon{font-size:38px;margin-bottom:12px}.feature-card h3{color:var(--blue);margin-bottom:8px}.feature-card p{color:var(--muted);font-size:14px}
+
+.stats{background:var(--blue);color:#fff;padding:45px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.stat{text-align:center;padding:18px}.stat strong{display:block;color:#ffd25a;font-size:38px;line-height:1}.stat span{display:block;margin-top:9px;font-size:14px}
+
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:25px;justify-content:center}
+.filter-btn{border:1px solid #d8e1ef;background:#fff;color:var(--blue);padding:9px 14px;border-radius:999px;font-weight:700}.filter-btn.active,.filter-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.search{max-width:650px;margin:0 auto 28px}.search input{width:100%;padding:13px 15px;border:1px solid #d6deea;border-radius:8px;background:#fff;outline:none}.search input:focus{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(29,90,167,.09)}
+.event-grid{grid-template-columns:repeat(3,1fr)}
+.event-card{overflow:hidden}
+.event-banner{height:160px;background:linear-gradient(90deg,rgba(8,34,75,.87),rgba(18,63,125,.62));position:relative}
+.event-banner img{width:100%;height:100%;object-fit:cover;opacity:.72}
+.event-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,34,75,.65),rgba(18,63,125,.20))}
+.event-tag{position:absolute;left:16px;top:14px;z-index:1;background:var(--gold);color:#fff;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}
+.event-body{padding:18px}.event-body h3{color:var(--blue);font-size:20px;margin-bottom:8px}.event-desc{color:var(--muted);font-size:14px;margin-bottom:12px;min-height:46px}
+.event-meta{display:grid;gap:7px;font-size:14px;color:#536173}.event-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.event-actions .btn{padding:10px 13px;font-size:13px}
+
+.dept-grid{grid-template-columns:repeat(4,1fr)}
+.dept-card{padding:24px;text-align:center;border-top:4px solid var(--blue)}
+.dept-icon{font-size:36px;margin-bottom:10px}.dept-card h3{color:var(--blue);font-size:18px;margin-bottom:7px}.dept-card p{color:var(--muted);font-size:14px}
+
+.gallery-grid{grid-template-columns:repeat(3,1fr)}
+.gallery-item{height:240px;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);position:relative}.gallery-item img{width:100%;height:100%;object-fit:cover;transition:.35s}.gallery-item:hover img{transform:scale(1.07)}
+.gallery-caption{position:absolute;bottom:0;left:0;right:0;padding:12px;color:#fff;font-weight:800;background:linear-gradient(transparent,rgba(0,0,0,.7))}
+
+/* page navigation */
+.page{display:none;min-height:700px}.page.active{display:block}
+.page-hero{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff;padding:55px 0}.page-hero h2{font-size:38px}.page-hero p{color:#dce6f5;margin-top:7px}
+
+/* forms */
+.form-wrap{padding:65px 0;background:#eef3f9}
+.form-box{width:min(520px,100%);margin:auto;background:#fff;padding:30px;border-radius:14px;box-shadow:var(--shadow)}
+.form-box h2{text-align:center;color:var(--blue);margin-bottom:20px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}.field label{display:block;font-weight:700;color:#334155;margin-bottom:6px;font-size:14px}.field input,.field select,.field textarea{width:100%;padding:12px;border:1px solid #d5deea;border-radius:8px;outline:none;background:#fff}.field textarea{min-height:100px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(29,90,167,.08)}
+.form-actions{display:flex;gap:10px;flex-wrap:wrap}.form-actions .btn{flex:1;min-width:140px}
+.note{background:#f7f9fc;padding:12px;border:1px solid #e4eaf3;border-radius:8px;color:#5e6c80;font-size:13px;margin-top:15px}
+
+/* dashboard */
+.dashboard{padding:55px 0}
+.dashboard-top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:25px}.dashboard-top h2{color:var(--blue)}
+.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:30px}.dashboard-card{padding:22px}.dashboard-card .label{color:var(--muted);font-size:13px}.dashboard-card strong{display:block;font-size:34px;color:var(--gold);line-height:1.1;margin-top:5px}
+.admin-form{margin-bottom:40px}.admin-list{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}.admin-event{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:20px}.admin-event h3{color:var(--blue);margin-bottom:8px}.admin-event p{color:var(--muted);font-size:14px;margin:5px 0}.admin-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.participant{background:#fff;border-radius:10px;box-shadow:var(--shadow);padding:16px;margin-bottom:12px}.participant h4{color:var(--blue);margin-bottom:5px}.participant p{color:var(--muted);font-size:14px}
+.empty{background:#fff;padding:30px;text-align:center;border-radius:12px;color:var(--muted);box-shadow:var(--shadow)}
+
+/* footer */
+footer{background:var(--navy);color:#fff;padding:50px 0 20px}.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:35px;margin-bottom:30px}.footer-col h3{color:#ffd25a;margin-bottom:14px}.footer-col p,.footer-col a{color:#d6dfef;font-size:14px;margin-bottom:7px;display:block}.footer-bottom{border-top:1px solid rgba(255,255,255,.18);padding-top:18px;text-align:center;color:#c8d3e3;font-size:13px}
+
+/* modal */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-box{width:min(700px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.modal-head{padding:20px 22px;border-bottom:1px solid #e5e9f0;display:flex;justify-content:space-between;gap:20px;align-items:center}.modal-head h3{color:var(--blue)}.close{border:0;background:#eef2f7;color:#344054;width:35px;height:35px;border-radius:50%;font-size:20px}.modal-content{padding:22px}.modal-content img{width:100%;height:300px;object-fit:cover;border-radius:10px;margin-bottom:15px}.modal-content p{color:var(--muted);margin:7px 0}
+
+/* toast */
+.toast{position:fixed;right:20px;bottom:20px;z-index:200;background:var(--navy);color:#fff;padding:13px 16px;border-radius:9px;box-shadow:0 8px 25px rgba(0,0,0,.2);display:none;max-width:350px}.toast.show{display:block}.toast.success{background:var(--success)}.toast.error{background:var(--danger)}
+
+@media(max-width:1000px){
+  .feature-grid{grid-template-columns:repeat(2,1fr)}
+  .event-grid{grid-template-columns:repeat(2,1fr)}
+  .dept-grid{grid-template-columns:repeat(2,1fr)}
+  .news-grid{grid-template-columns:1fr 1fr}
+  .header-inner{align-items:flex-start;padding:12px 0}.nav{max-height:0;overflow:hidden;flex-basis:100%;transition:max-height .25s}.nav.open{max-height:400px}.mobile-toggle{display:block}.header-inner{flex-wrap:wrap}
+}
+@media(max-width:700px){
+  .hero{min-height:560px}.hero-content{padding:45px 0}.hero h2{font-size:38px}.hero p{font-size:16px}
+  .news-grid,.event-grid,.gallery-grid,.admin-list{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr}.about-image{height:280px}.about-points{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}.dept-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="top-strip">
+  <div class="container">
+    <span>🎓 College Event Management Portal</span>
+    <span>📍 Badnera – Amravati | Student Activities</span>
+  </div>
+</div>
+
+<header class="header">
+  <div class="container header-inner">
+    <div class="brand">
+      <div class="logo">PRM</div>
+      <div>
+        <h1>Prof. Ram Meghe College of Engineering &amp; Management</h1>
+        <p>Event Management System • Basic College Event Registration</p>
+      </div>
+    </div>
+    <button class="mobile-toggle" onclick="toggleNav()">☰ Menu</button>
+    <nav class="nav" id="mainNav">
+      <button onclick="goHome()">Home</button>
+      <button onclick="homeSection('about')">About</button>
+      <button onclick="homeSection('events')">Events</button>
+      <button onclick="homeSection('departments')">Departments</button>
+      <button onclick="homeSection('gallery')">Gallery</button>
+      <button class="gold" onclick="showPage('loginPage')">Login</button>
+    </nav>
+  </div>
+</header>
+
+<div class="announcement">
+  <div class="container">📢 Registration Open: Technical Fest • Project Expo • Hackathon • Sports • Cultural Events • Workshops</div>
+</div>
+
+<!-- HOME -->
+<section id="homePage" class="page active">
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="container hero-content">
+      <div class="kicker">College Event Management System</div>
+      <h2>Connect. Participate. Achieve.</h2>
+      <p>A centralized platform for college events where students can discover programs, view event details and complete online registration while administrators manage events and participants.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="homeSection('events')">Explore Events</button>
+        <button class="btn btn-light" onclick="showPage('registerPage')">Student Registration</button>
+      </div>
+    </div>
+    <div class="hero-dots" id="heroDots"></div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Latest Updates</div>
+        <h2>News &amp; Announcements</h2>
+        <p>Important event information for students and the college community.</p>
+      </div>
+      <div class="news-grid">
+        <article class="news-card"><div class="news-date">29 September 2026</div><h3>Final Year Project Expo</h3><p>Final-year students can present innovative academic projects, prototypes and software solutions.</p></article>
+        <article class="news-card"><div class="news-date">25 September 2026</div><h3>Technical Fest 2026</h3><p>Coding challenges, technical quizzes, presentations and innovation activities are open for registration.</p></article>
+        <article class="news-card"><div class="news-date">20 September 2026</div><h3>Placement Readiness Program</h3><p>Students can attend sessions on aptitude, resume preparation, interviews and professional communication.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section alt">
+    <div class="container about-grid">
+      <div class="about-copy">
+        <div class="eyebrow" style="color:var(--gold);font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:12px">About the Project</div>
+        <h2>Smart Event Registration for College Activities</h2>
+        <p>This project digitizes common college event activities by bringing event publishing, student registration and participant tracking into one web-based platform.</p>
+        <p>It is designed for academic events, technical competitions, cultural programs, sports, workshops, seminars, placement activities and alumni interactions.</p>
+        <div class="about-points">
+          <div class="about-point">✓ Centralized Event Information</div>
+          <div class="about-point">✓ Online Student Registration</div>
+          <div class="about-point">✓ Admin Event Management</div>
+          <div class="about-point">✓ Registration Tracking</div>
+        </div>
+      </div>
+      <div class="about-image"><img src="assets/4.jpg" alt="College event"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><div class="eyebrow">System Benefits</div><h2>Why This Portal?</h2><p>Key features included in the final-year project demonstration.</p></div>
+      <div class="feature-grid">
+        <article class="feature-card"><div class="feature-icon">📅</div><h3>Event Management</h3><p>Admin can create, update and delete college events from one dashboard.</p></article>
+        <article class="feature-card"><div class="feature-icon">📝</div><h3>Online Registration</h3><p>Students can create accounts and register for available events.</p></article>
+        <article class="feature-card"><div class="feature-icon">👥</div><h3>Participant Tracking</h3><p>Administrators can view students registered for each event.</p></article>
+        <article class="feature-card"><div class="feature-icon">📊</div><h3>Simple Dashboard</h3><p>Event, student and registration counts are displayed in a clear dashboard.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container stats-grid">
+      <div class="stat"><strong id="eventStat">0</strong><span>Active Events</span></div>
+      <div class="stat"><strong id="studentStat">0</strong><span>Registered Students</span></div>
+      <div class="stat"><strong id="registrationStat">0</strong><span>Total Registrations</span></div>
+      <div class="stat"><strong>7+</strong><span>Academic Areas</span></div>
+    </div>
+  </section>
+
+  <section id="events" class="section">
+    <div class="container">
+      <div class="section-head"><div class="eyebrow">Participate</div><h2>Upcoming College Events</h2><p>Browse events, view details and register online.</p></div>
+      <div class="search"><input id="searchEvent" type="text" placeholder="🔍 Search by event name, category or venue..." oninput="displayEvents()"></div>
+      <div class="filters" id="categoryFilters"></div>
+      <div class="event-grid" id="eventsContainer"></div>
+    </div>
+  </section>
+
+  <section id="departments" class="section alt">
+    <div class="container">
+      <div class="section-head"><div class="eyebrow">Academic Activities</div><h2>Departments</h2><p>Events can be organized across different academic areas.</p></div>
+      <div class="dept-grid">
+        <article class="dept-card"><div class="dept-icon">💻</div><h3>Computer Science &amp; Engineering</h3><p>Coding, AI, cybersecurity and software development activities.</p></article>
+        <article class="dept-card"><div class="dept-icon">📊</div><h3>CSE – Data Science</h3><p>Data analytics, machine learning and visualization events.</p></article>
+        <article class="dept-card"><div class="dept-icon">🌐</div><h3>Information Technology</h3><p>Web, networking, database and application development events.</p></article>
+        <article class="dept-card"><div class="dept-icon">📡</div><h3>Electronics &amp; Telecommunication</h3><p>Embedded systems, communication, electronics and IoT activities.</p></article>
+        <article class="dept-card"><div class="dept-icon">⚡</div><h3>Electrical Engineering</h3><p>Power, renewable energy and electrical technology programs.</p></article>
+        <article class="dept-card"><div class="dept-icon">🏗️</div><h3>Civil Engineering</h3><p>Construction, structures, infrastructure and sustainability events.</p></article>
+        <article class="dept-card"><div class="dept-icon">📈</div><h3>MBA</h3><p>Management, entrepreneurship, leadership and career activities.</p></article>
+        <article class="dept-card"><div class="dept-icon">🎯</div><h3>General Student Activities</h3><p>Sports, culture, social outreach, clubs and college-wide programs.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="section gallery-section">
+    <div class="container">
+      <div class="section-head"><div class="eyebrow">Campus Life</div><h2>Event Gallery</h2><p>Use the supplied event photographs as the visual identity of the portal.</p></div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="assets/11.jpg" alt="College cultural event"><div class="gallery-caption">Cultural Performance</div></div>
+        <div class="gallery-item"><img src="assets/10.jpg" alt="College stage event"><div class="gallery-caption">Annual Stage Program</div></div>
+        <div class="gallery-item"><img src="assets/9.jpg" alt="Traditional performance"><div class="gallery-caption">Traditional Presentation</div></div>
+        <div class="gallery-item"><img src="assets/8.jpg" alt="Themed stage performance"><div class="gallery-caption">Student Talent Event</div></div>
+        <div class="gallery-item"><img src="assets/6.jpg" alt="College annual event"><div class="gallery-caption">Annual College Function</div></div>
+        <div class="gallery-item"><img src="assets/4.jpg" alt="College sports event"><div class="gallery-caption">College Celebration</div></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- LOGIN -->
+<section id="loginPage" class="page">
+  <div class="page-hero"><div class="container"><h2>Login Portal</h2><p>Access the student or administrator dashboard.</p></div></div>
+  <div class="form-wrap">
+    <div class="container">
+      <div class="form-box">
+        <h2>Student / Admin Login</h2>
+        <div class="field"><label for="loginEmail">Email</label><input id="loginEmail" type="email" placeholder="Enter email"></div>
+        <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" placeholder="Enter password"></div>
+        <div class="form-actions"><button class="btn btn-blue" onclick="login()">Login</button><button class="btn btn-outline" onclick="showPage('registerPage')">Create Student Account</button></div>
+        <div class="note"><b>Demo Admin:</b> admin@college.com &nbsp; | &nbsp; <b>Password:</b> admin123</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section id="registerPage" class="page">
+  <div class="page-hero"><div class="container"><h2>Student Registration</h2><p>Create a student account to register for college events.</p></div></div>
+  <div class="form-wrap">
+    <div class="container">
+      <div class="form-box">
+        <h2>Create Student Account</h2>
+        <div class="form-row">
+          <div class="field"><label for="studentName">Full Name</label><input id="studentName" type="text" placeholder="Enter full name"></div>
+          <div class="field"><label for="studentEmail">Email</label><input id="studentEmail" type="email" placeholder="Enter email"></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="studentPassword">Password</label><input id="studentPassword" type="password" placeholder="Create password"></div>
+          <div class="field"><label for="studentYear">Year</label><select id="studentYear"><option value="">Select year</option><option>First Year</option><option>Second Year</option><option>Third Year</option><option>Final Year</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="studentCourse">Branch</label><select id="studentCourse"><option value="">Select branch</option><option>CSE</option><option>CSE – Data Science</option><option>Information Technology</option><option>E&amp;TC</option><option>Electrical Engineering</option><option>Civil Engineering</option><option>MBA</option></select></div>
+          <div class="field"><label for="studentMobile">Mobile Number</label><input id="studentMobile" type="tel" placeholder="10-digit mobile number"></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-success" onclick="registerStudent()">Create Account</button><button class="btn btn-outline" onclick="showPage('loginPage')">Back to Login</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN -->
+<section id="adminPage" class="page">
+  <div class="page-hero"><div class="container"><h2>Admin Dashboard</h2><p>Manage events and inspect student registrations.</p></div></div>
+  <div class="dashboard">
+    <div class="container">
+      <div class="dashboard-top"><h2 id="adminWelcome">Welcome, Admin</h2><button class="btn btn-danger" onclick="logout()">Logout</button></div>
+      <div class="dash-grid">
+        <div class="dashboard-card"><span class="label">Total Events</span><strong id="totalEvents">0</strong></div>
+        <div class="dashboard-card"><span class="label">Total Students</span><strong id="totalStudents">0</strong></div>
+        <div class="dashboard-card"><span class="label">Total Registrations</span><strong id="totalRegistrations">0</strong></div>
+      </div>
+
+      <div class="form-box admin-form">
+        <h2 id="eventFormTitle">Add New Event</h2>
+        <input id="editEventId" type="hidden">
+        <div class="form-row">
+          <div class="field"><label for="eventName">Event Name</label><input id="eventName" type="text" placeholder="Event name"></div>
+          <div class="field"><label for="eventCategory">Category</label><select id="eventCategory"><option>Technical</option><option>Academic</option><option>Cultural</option><option>Sports</option><option>Workshop</option><option>Placement</option><option>Alumni</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="eventDate">Date</label><input id="eventDate" type="date"></div>
+          <div class="field"><label for="eventTime">Time</label><input id="eventTime" type="time"></div>
+        </div>
+        <div class="field"><label for="eventVenue">Venue</label><input id="eventVenue" type="text" placeholder="Event venue"></div>
+        <div class="field"><label for="eventDescription">Description</label><textarea id="eventDescription" placeholder="Describe the event"></textarea></div>
+        <div class="form-actions"><button class="btn btn-blue" onclick="saveEvent()">Save Event</button><button class="btn btn-outline" onclick="clearEventForm()">Clear</button></div>
+      </div>
+
+      <h2 style="color:var(--blue);margin-bottom:18px">Manage Events</h2>
+      <div class="admin-list" id="adminEventsContainer"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDENT -->
+<section id="studentPage" class="page">
+  <div class="page-hero"><div class="container"><h2>Student Dashboard</h2><p>View available events and your registrations.</p></div></div>
+  <div class="dashboard">
+    <div class="container">
+      <div class="dashboard-top"><h2 id="studentWelcome">Welcome</h2><button class="btn btn-danger" onclick="logout()">Logout</button></div>
+      <div class="dash-grid">
+        <div class="dashboard-card"><span class="label">Available Events</span><strong id="studentAvailable">0</strong></div>
+        <div class="dashboard-card"><span class="label">My Registrations</span><strong id="studentMyCount">0</strong></div>
+        <div class="dashboard-card"><span class="label">Account</span><strong style="font-size:18px;margin-top:12px" id="studentBranch">Student</strong></div>
+      </div>
+
+      <h2 style="color:var(--blue);margin-bottom:18px">Available Events</h2>
+      <div class="event-grid" id="studentEventsContainer"></div>
+
+      <h2 style="color:var(--blue);margin:45px 0 18px">My Registrations</h2>
+      <div class="event-grid" id="myRegistrationsContainer"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTICIPANTS -->
+<section id="registrationPage" class="page">
+  <div class="page-hero"><div class="container"><h2>Registered Students</h2><p>Participant list for the selected event.</p></div></div>
+  <div class="dashboard"><div class="container"><div class="dashboard-top"><h2 id="participantTitle">Event Participants</h2><button class="btn btn-blue" onclick="showPage('adminPage')">Back to Admin</button></div><div id="registrationList"></div></div></div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col"><h3>College Event Management System</h3><p>A final-year project concept for publishing college events, enabling student registrations and managing participant records through a centralized web portal.</p></div>
+      <div class="footer-col"><h3>Quick Links</h3><a href="#" onclick="goHome();return false">Home</a><a href="#" onclick="homeSection('about');return false">About</a><a href="#" onclick="homeSection('events');return false">Events</a><a href="#" onclick="homeSection('gallery');return false">Gallery</a></div>
+      <div class="footer-col"><h3>Contact</h3><p>Prof. Ram Meghe College of Engineering &amp; Management</p><p>Badnera – Amravati, Maharashtra</p><p>Student Event Portal</p></div>
+    </div>
+    <div class="footer-bottom">© 2026 College Event Management System • Final Year Engineering Project • HTML, CSS &amp; JavaScript</div>
+  </div>
+</footer>
+
+<div class="modal" id="eventModal" onclick="closeModalOnBackdrop(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="modalTitle">Event</h3><button class="close" onclick="closeEventModal()">×</button></div>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+/* -------------------------------
+   Safe localStorage helpers
+-------------------------------- */
+function readStorage(key, fallback){
+  try{
+    const raw = localStorage.getItem(key);
+    if(!raw) return fallback;
+    const parsed = JSON.parse(raw);
+    return parsed ?? fallback;
+  }catch(error){
+    console.warn('Storage read error:', key, error);
+    return fallback;
+  }
+}
+
+function writeStorage(key, value){
+  try{
+    localStorage.setItem(key, JSON.stringify(value));
+  }catch(error){
+    console.warn('Storage write error:', key, error);
+  }
+}
+
+const defaultUsers = [
+  {id:1,name:'Admin',email:'admin@college.com',password:'admin123',role:'admin'}
+];
+
+const defaultEvents = [
+  {id:101,name:'TechnoFest 2026',category:'Technical',date:'2026-10-10',time:'10:00',venue:'Seminar Hall',description:'Coding competitions, technical quizzes, project demonstrations and innovation activities.',image:'assets/10.jpg'},
+  {id:102,name:'Final Year Project Expo',category:'Academic',date:'2026-10-15',time:'11:00',venue:'Project Exhibition Hall',description:'Showcase innovative final-year engineering projects, prototypes and software solutions.',image:'assets/4.jpg'},
+  {id:103,name:'Inter College Hackathon',category:'Technical',date:'2026-10-20',time:'09:00',venue:'Computer Center',description:'A competitive coding and innovation event focused on real-world problem solving.',image:'assets/8.jpg'},
+  {id:104,name:'Annual Cultural Fest',category:'Cultural',date:'2026-10-25',time:'17:00',venue:'College Ground',description:'Music, dance, drama and cultural performances by students from different departments.',image:'assets/11.jpg'},
+  {id:105,name:'Sports Day 2026',category:'Sports',date:'2026-11-02',time:'09:00',venue:'Sports Ground',description:'Annual athletics and sports competitions for students across departments.',image:'assets/6.jpg'},
+  {id:106,name:'AI & Machine Learning Workshop',category:'Workshop',date:'2026-11-08',time:'10:00',venue:'Computer Lab',description:'Practical workshop covering artificial intelligence, machine learning and modern tools.',image:'assets/9.jpg'},
+  {id:107,name:'Placement Readiness Program',category:'Placement',date:'2026-11-12',time:'11:00',venue:'Training Hall',description:'Career development session covering aptitude, technical interviews, resume preparation and communication skills.',image:'assets/10.jpg'},
+  {id:108,name:'Alumni Interaction Meet',category:'Alumni',date:'2026-11-20',time:'14:00',venue:'Conference Hall',description:'Interaction with alumni about industry experience, career opportunities and higher education.',image:'assets/4.jpg'}
+];
+
+let users = readStorage('ems_users', defaultUsers.slice());
+let events = readStorage('ems_events', defaultEvents.slice());
+let registrations = readStorage('ems_registrations', []);
+let currentUser = readStorage('ems_currentUser', null);
+let activeCategory = 'All';
+
+/* -------------------------------
+   Storage sync
+-------------------------------- */
+function saveAll(){
+  writeStorage('ems_users', users);
+  writeStorage('ems_events', events);
+  writeStorage('ems_registrations', registrations);
+  if(currentUser) writeStorage('ems_currentUser', currentUser);
+  else localStorage.removeItem('ems_currentUser');
+}
+
+/* -------------------------------
+   Navigation
+-------------------------------- */
+function hideAllPages(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+}
+
+function showPage(id){
+  hideAllPages();
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('mainNav').classList.remove('open');
+
+  if(id === 'homePage'){
+    displayEvents();
+    updateStats();
+  }
+  if(id === 'adminPage'){
+    if(!isAdmin()){showPage('loginPage');return;}
+    updateAdminDashboard();
+    displayAdminEvents();
+  }
+  if(id === 'studentPage'){
+    if(!isStudent()){showPage('loginPage');return;}
+    displayStudentEvents();
+    displayMyRegistrations();
+    updateStudentDashboard();
+  }
+}
+
+function goHome(){
+  showPage('homePage');
+}
+
+function homeSection(id){
+  showPage('homePage');
+  setTimeout(()=>{
+    const el = document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  },80);
+}
+
+function toggleNav(){
+  document.getElementById('mainNav').classList.toggle('open');
+}
+
+/* -------------------------------
+   User roles
+-------------------------------- */
+function isAdmin(){return !!currentUser && currentUser.role === 'admin';}
+function isStudent(){return !!currentUser && currentUser.role === 'student';}
+
+/* -------------------------------
+   Toast
+-------------------------------- */
+let toastTimer = null;
+function toast(message,type=''){
+  const el = document.getElementById('toast');
+  el.textContent = message;
+  el.className = 'toast show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{el.className='toast';},2800);
+}
+
+/* -------------------------------
+   Login / Registration
+-------------------------------- */
+function login(){
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password = document.getElementById('loginPassword').value;
+
+  if(!email || !password){
+    toast('Please enter email and password.','error');
+    return;
+  }
+
+  const user = users.find(u => String(u.email).toLowerCase() === email && u.password === password);
+  if(!user){
+    toast('Invalid email or password.','error');
+    return;
+  }
+
+  currentUser = user;
+  saveAll();
+  document.getElementById('loginEmail').value='';
+  document.getElementById('loginPassword').value='';
+  toast('Login successful.','success');
+
+  if(user.role === 'admin') showPage('adminPage');
+  else showPage('studentPage');
+}
+
+function registerStudent(){
+  const name = document.getElementById('studentName').value.trim();
+  const email = document.getElementById('studentEmail').value.trim().toLowerCase();
+  const password = document.getElementById('studentPassword').value;
+  const year = document.getElementById('studentYear').value;
+  const course = document.getElementById('studentCourse').value;
+  const mobile = document.getElementById('studentMobile').value.trim();
+
+  if(!name || !email || !password || !year || !course || !mobile){
+    toast('Please fill all registration fields.','error');
+    return;
+  }
+
+  if(!/^\S+@\S+\.\S+$/.test(email)){
+    toast('Please enter a valid email address.','error');
+    return;
+  }
+
+  if(!/^\d{10}$/.test(mobile)){
+    toast('Mobile number must contain 10 digits.','error');
+    return;
+  }
+
+  if(password.length < 4){
+    toast('Password should contain at least 4 characters.','error');
+    return;
+  }
+
+  if(users.some(u => String(u.email).toLowerCase() === email)){
+    toast('This email is already registered.','error');
+    return;
+  }
+
+  const newUser = {
+    id: Date.now(), name, email, password, year, course, mobile, role:'student'
+  };
+
+  users.push(newUser);
+  saveAll();
+
+  ['studentName','studentEmail','studentPassword','studentMobile'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('studentYear').value='';
+  document.getElementById('studentCourse').value='';
+
+  toast('Student account created successfully.','success');
+  showPage('loginPage');
+}
+
+function logout(){
+  currentUser = null;
+  localStorage.removeItem('ems_currentUser');
+  toast('Logged out successfully.','success');
+  showPage('homePage');
+}
+
+/* -------------------------------
+   Events
+-------------------------------- */
+function formatDate(value){
+  if(!value) return '';
+  const date = new Date(value + 'T00:00:00');
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+function getCategories(){
+  return ['All', ...Array.from(new Set(events.map(e=>e.category))).sort()];
+}
+
+function renderCategoryFilters(){
+  const wrap = document.getElementById('categoryFilters');
+  wrap.innerHTML = getCategories().map(category=>`<button class="filter-btn ${activeCategory===category?'active':''}" onclick="setCategory('${escapeAttr(category)}')">${escapeHtml(category)}</button>`).join('');
+}
+
+function setCategory(category){
+  activeCategory = category;
+  renderCategoryFilters();
+  displayEvents();
+}
+
+function displayEvents(){
+  const container = document.getElementById('eventsContainer');
+  if(!container) return;
+  const searchEl = document.getElementById('searchEvent');
+  const search = searchEl ? searchEl.value.trim().toLowerCase() : '';
+
+  const filtered = events.filter(event=>{
+    const hay = [event.name,event.category,event.venue,event.description].join(' ').toLowerCase();
+    return (activeCategory === 'All' || event.category === activeCategory) && hay.includes(search);
+  });
+
+  if(filtered.length === 0){
+    container.innerHTML = '<div class="empty" style="grid-column:1/-1">No matching events found.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(event=>eventCardHTML(event,true)).join('');
+}
+
+function eventCardHTML(event,publicView=false){
+  const registered = isStudent() && registrations.some(r=>r.eventId===event.id && r.studentId===currentUser.id);
+  return `
+    <article class="event-card">
+      <div class="event-banner">
+        <img src="${safeImage(event.image)}" alt="${escapeAttr(event.name)}">
+        <span class="event-tag">${escapeHtml(event.category)}</span>
+      </div>
+      <div class="event-body">
+        <h3>${escapeHtml(event.name)}</h3>
+        <div class="event-desc">${escapeHtml(event.description)}</div>
+        <div class="event-meta">
+          <div>📅 <b>${formatDate(event.date)}</b></div>
+          <div>⏰ <b>${escapeHtml(event.time)}</b></div>
+          <div>📍 <b>${escapeHtml(event.venue)}</b></div>
+        </div>
+        <div class="event-actions">
+          <button class="btn btn-outline" onclick="openEventModal(${event.id})">View Details</button>
+          ${publicView ? `<button class="btn ${registered?'btn-outline':'btn-primary'}" onclick="registerForEvent(${event.id})">${registered?'Already Registered':'Register'}</button>` : ''}
+        </div>
+      </div>
+    </article>`;
+}
+
+function safeImage(path){
+  return /^assets\/(11|10|9|8|6|4)\.jpg$/i.test(path || '') ? path : 'assets/4.jpg';
+}
+
+function openEventModal(eventId){
+  const event = events.find(e=>e.id===eventId);
+  if(!event) return;
+  document.getElementById('modalTitle').textContent = event.name;
+  document.getElementById('modalContent').innerHTML = `
+    <img src="${safeImage(event.image)}" alt="${escapeAttr(event.name)}">
+    <p><b>Category:</b> ${escapeHtml(event.category)}</p>
+    <p><b>Date:</b> ${formatDate(event.date)}</p>
+    <p><b>Time:</b> ${escapeHtml(event.time)}</p>
+    <p><b>Venue:</b> ${escapeHtml(event.venue)}</p>
+    <p style="margin-top:12px"><b>Description:</b> ${escapeHtml(event.description)}</p>
+    <div style="margin-top:18px"><button class="btn btn-primary" onclick="closeEventModal();registerForEvent(${event.id})">Register for Event</button></div>`;
+  document.getElementById('eventModal').classList.add('show');
+}
+
+function closeEventModal(){document.getElementById('eventModal').classList.remove('show');}
+function closeModalOnBackdrop(event){if(event.target.id==='eventModal')closeEventModal();}
+
+function registerForEvent(eventId){
+  if(!currentUser){
+    toast('Please login as a student first.','error');
+    showPage('loginPage');
+    return;
+  }
+  if(!isStudent()){
+    toast('Only student accounts can register for events.','error');
+    return;
+  }
+  const event = events.find(e=>e.id===eventId);
+  if(!event){toast('Event not found.','error');return;}
+
+  const exists = registrations.some(r=>r.eventId===eventId && r.studentId===currentUser.id);
+  if(exists){
+    toast('You are already registered for this event.','error');
+    return;
+  }
+
+  registrations.push({
+    id:Date.now(), eventId, studentId:currentUser.id,
+    studentName:currentUser.name, studentEmail:currentUser.email,
+    date:new Date().toLocaleDateString('en-IN')
+  });
+  saveAll();
+  toast('Event registration successful!','success');
+  updateStats();
+  if(document.getElementById('studentPage').classList.contains('active')){
+    displayStudentEvents();
+    displayMyRegistrations();
+    updateStudentDashboard();
+  }
+  displayEvents();
+}
+
+/* -------------------------------
+   Admin
+-------------------------------- */
+function saveEvent(){
+  if(!isAdmin()){toast('Admin login required.','error');showPage('loginPage');return;}
+
+  const name=document.getElementById('eventName').value.trim();
+  const category=document.getElementById('eventCategory').value;
+  const date=document.getElementById('eventDate').value;
+  const time=document.getElementById('eventTime').value;
+  const venue=document.getElementById('eventVenue').value.trim();
+  const description=document.getElementById('eventDescription').value.trim();
+  const editId=document.getElementById('editEventId').value;
+
+  if(!name || !category || !date || !time || !venue || !description){
+    toast('Please fill all event details.','error');
+    return;
+  }
+
+  if(editId){
+    const event=events.find(e=>String(e.id)===String(editId));
+    if(!event){toast('Event not found.','error');return;}
+    event.name=name;
+    event.category=category;
+    event.date=date;
+    event.time=time;
+    event.venue=venue;
+    event.description=description;
+    toast('Event updated successfully.','success');
+  }else{
+    const images=['assets/10.jpg','assets/4.jpg','assets/8.jpg','assets/11.jpg','assets/6.jpg','assets/9.jpg'];
+    events.push({id:Date.now(),name,category,date,time,venue,description,image:images[events.length % images.length]});
+    toast('New event added successfully.','success');
+  }
+
+  saveAll();
+  clearEventForm();
+  displayAdminEvents();
+  displayEvents();
+  updateStats();
+}
+
+function clearEventForm(){
+  ['editEventId','eventName','eventDate','eventTime','eventVenue','eventDescription'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('eventFormTitle').textContent='Add New Event';
+  document.getElementById('eventCategory').value='Technical';
+}
+
+function editEvent(id){
+  const event=events.find(e=>e.id===id);
+  if(!event)return;
+  document.getElementById('editEventId').value=event.id;
+  document.getElementById('eventName').value=event.name;
+  document.getElementById('eventCategory').value=event.category;
+  document.getElementById('eventDate').value=event.date;
+  document.getElementById('eventTime').value=event.time;
+  document.getElementById('eventVenue').value=event.venue;
+  document.getElementById('eventDescription').value=event.description;
+  document.getElementById('eventFormTitle').textContent='Edit Event';
+  window.scrollTo({top:300,behavior:'smooth'});
+}
+
+function deleteEvent(id){
+  if(!isAdmin())return;
+  const event=events.find(e=>e.id===id);
+  if(!event)return;
+  if(!confirm('Delete "'+event.name+'"?'))return;
+  events=events.filter(e=>e.id!==id);
+  registrations=registrations.filter(r=>r.eventId!==id);
+  saveAll();
+  displayAdminEvents();
+  displayEvents();
+  updateStats();
+  toast('Event deleted.','success');
+}
+
+function displayAdminEvents(){
+  const container=document.getElementById('adminEventsContainer');
+  if(!container)return;
+  if(events.length===0){container.innerHTML='<div class="empty" style="grid-column:1/-1">No events available.</div>';return;}
+  container.innerHTML=events.map(event=>{
+    const count=registrations.filter(r=>r.eventId===event.id).length;
+    return `<article class="admin-event">
+      <h3>${escapeHtml(event.name)}</h3>
+      <p><b>Category:</b> ${escapeHtml(event.category)}</p>
+      <p><b>Date:</b> ${formatDate(event.date)} &nbsp; <b>Time:</b> ${escapeHtml(event.time)}</p>
+      <p><b>Venue:</b> ${escapeHtml(event.venue)}</p>
+      <p>${escapeHtml(event.description)}</p>
+      <p><b>Registrations:</b> ${count}</p>
+      <div class="admin-actions">
+        <button class="btn btn-outline" onclick="editEvent(${event.id})">Edit</button>
+        <button class="btn btn-danger" onclick="deleteEvent(${event.id})">Delete</button>
+        <button class="btn btn-blue" onclick="viewRegistrations(${event.id})">View Students</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function viewRegistrations(eventId){
+  if(!isAdmin()){toast('Admin login required.','error');return;}
+  const event=events.find(e=>e.id===eventId);
+  if(!event)return;
+  const list=registrations.filter(r=>r.eventId===eventId);
+  document.getElementById('participantTitle').textContent='Participants – '+event.name;
+  const container=document.getElementById('registrationList');
+  if(list.length===0){container.innerHTML='<div class="empty">No students have registered for this event yet.</div>';showPage('registrationPage');return;}
+  container.innerHTML=list.map(student=>`<div class="participant"><h4>👨‍🎓 ${escapeHtml(student.studentName)}</h4><p>📧 ${escapeHtml(student.studentEmail)}</p><p>📅 Registered on: ${escapeHtml(student.date)}</p></div>`).join('');
+  showPage('registrationPage');
+}
+
+/* -------------------------------
+   Student dashboard
+-------------------------------- */
+function displayStudentEvents(){
+  const container=document.getElementById('studentEventsContainer');
+  if(!container)return;
+  if(events.length===0){container.innerHTML='<div class="empty" style="grid-column:1/-1">No events currently available.</div>';return;}
+  container.innerHTML=events.map(e=>eventCardHTML(e,false)).join('');
+}
+
+function displayMyRegistrations(){
+  if(!isStudent())return;
+  const container=document.getElementById('myRegistrationsContainer');
+  const mine=registrations.filter(r=>r.studentId===currentUser.id);
+  if(mine.length===0){container.innerHTML='<div class="empty" style="grid-column:1/-1">You have not registered for any event yet.</div>';return;}
+  container.innerHTML=mine.map(reg=>{
+    const event=events.find(e=>e.id===reg.eventId);
+    if(!event)return '';
+    return `<article class="event-card"><div class="event-banner"><img src="${safeImage(event.image)}" alt="${escapeAttr(event.name)}"><span class="event-tag">Registered</span></div><div class="event-body"><h3>${escapeHtml(event.name)}</h3><div class="event-meta"><div>📅 <b>${formatDate(event.date)}</b></div><div>⏰ <b>${escapeHtml(event.time)}</b></div><div>📍 <b>${escapeHtml(event.venue)}</b></div><div>✅ <b>Registered on ${escapeHtml(reg.date)}</b></div></div></div></article>`;
+  }).join('');
+}
+
+/* -------------------------------
+   Dashboard stats
+-------------------------------- */
+function updateStats(){
+  const students=users.filter(u=>u.role==='student').length;
+  const total=registrations.length;
+  document.getElementById('eventStat').textContent=events.length;
+  document.getElementById('studentStat').textContent=students;
+  document.getElementById('registrationStat').textContent=total;
+}
+
+function updateAdminDashboard(){
+  if(!isAdmin())return;
+  document.getElementById('adminWelcome').textContent='Welcome, '+currentUser.name;
+  document.getElementById('totalEvents').textContent=events.length;
+  document.getElementById('totalStudents').textContent=users.filter(u=>u.role==='student').length;
+  document.getElementById('totalRegistrations').textContent=registrations.length;
+}
+
+function updateStudentDashboard(){
+  if(!isStudent())return;
+  const mine=registrations.filter(r=>r.studentId===currentUser.id).length;
+  document.getElementById('studentWelcome').textContent='Welcome, '+currentUser.name;
+  document.getElementById('studentAvailable').textContent=events.length;
+  document.getElementById('studentMyCount').textContent=mine;
+  document.getElementById('studentBranch').textContent=currentUser.course || 'Student';
+}
+
+/* -------------------------------
+   Hero slider using uploaded images
+-------------------------------- */
+const heroImages=['assets/4.jpg','assets/11.jpg','assets/10.jpg','assets/9.jpg','assets/8.jpg','assets/6.jpg'];
+let heroIndex=0;
+let heroTimer=null;
+
+function setupHero(){
+  const bg=document.getElementById('heroBg');
+  const dots=document.getElementById('heroDots');
+  dots.innerHTML=heroImages.map((_,i)=>`<button class="hero-dot ${i===0?'active':''}" aria-label="Slide ${i+1}" onclick="setHeroSlide(${i})"></button>`).join('');
+  setHeroSlide(0);
+  clearInterval(heroTimer);
+  heroTimer=setInterval(()=>setHeroSlide((heroIndex+1)%heroImages.length),4500);
+}
+
+function setHeroSlide(index){
+  heroIndex=index;
+  const bg=document.getElementById('heroBg');
+  bg.style.backgroundImage=`url("${heroImages[heroIndex]}")`;
+  document.querySelectorAll('.hero-dot').forEach((dot,i)=>dot.classList.toggle('active',i===heroIndex));
+}
+
+/* -------------------------------
+   HTML safety
+-------------------------------- */
+function escapeHtml(value){
+  return String(value ?? '').replace(/[&<>'\"]/g,ch=>({ '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;' }[ch]));
+}
+function escapeAttr(value){return escapeHtml(value).replace(/`/g,'&#96;');}
+
+/* -------------------------------
+   Init
+-------------------------------- */
+function init(){
+  renderCategoryFilters();
+  displayEvents();
+  updateStats();
+  setupHero();
+  console.log('College Event Management System loaded successfully.');
+}
+
+init();
+</script>
+</body>
+</html>
